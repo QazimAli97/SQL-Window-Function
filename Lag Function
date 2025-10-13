@@ -1,0 +1,47 @@
+create database [Profit DB]
+
+use [Profit DB]
+
+-- Create a table to store monthly profit data for different products
+CREATE TABLE ProfitData (
+    MonthNumber INT,
+    MonthName VARCHAR(3),
+    Product VARCHAR(50),
+    Profit INT
+);
+
+-- Insert data into the ProfitData table
+INSERT INTO ProfitData (MonthNumber, MonthName, Product, Profit) VALUES
+(1, 'Jan', 'Product A', 1000),
+(2, 'Feb', 'Product A', 1500),
+(3, 'Mar', 'Product A', 1200),
+(4, 'Apr', 'Product A', 1700),
+(5, 'May', 'Product A', 1300),
+(6, 'Jun', 'Product A', 1600),
+(1, 'Jan', 'Product B', 2000),
+(2, 'Feb', 'Product B', 2500),
+(3, 'Mar', 'Product B', 2200),
+(4, 'Apr', 'Product B', 2700),
+(5, 'May', 'Product B', 2300),
+(6, 'Jun', 'Product B', 2600);
+
+
+select * from  profitData
+--to add a new column that shows Previous month's profit for each product
+select *,
+LAG(Profit)over(partition by product order by monthNumber)[Lag Function]
+from ProfitData
+
+
+--We don't want product column on the output but we want each month's total profit to be show by monthnumber & 
+--month name, Also a new colunn should be added to show previous month's total profit
+
+
+select * from  profitData
+
+select MonthNumber,MonthName,sum(Profit)[Total Profit],
+LAG(sum(Profit))over (order by monthNumber)[Lag]
+from ProfitData
+group by MonthNumber,MonthName
+
+
