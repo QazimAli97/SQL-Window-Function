@@ -1,0 +1,286 @@
+🟢 EASY LEVEL (1–3)
+1️⃣ Stock Price Change
+
+Table: StockPrices(Stock, Date, Price)
+👉 Task: Show each day’s price and the next day’s price for the same stock.
+🧩 Expected:
+Stock, Date, Price, NextDayPrice
+
+2️⃣ Temperature Difference
+
+Table: Weather(City, Date, Temperature)
+👉 Task: Find previous day’s temperature for each city using LAG().
+🧩 Expected:
+City, Date, Temperature, PrevDayTemp, TempChange
+
+3️⃣ Employee Promotion Tracking
+
+Table: EmployeePromotions(EmpID, Year, Position)
+👉 Task: Show the previous position and next position for each employee (use both LAG() and LEAD()).
+🧩 Expected:
+EmpID, Year, Position, PrevPosition, NextPosition
+
+🟡 MEDIUM LEVEL (4–7)
+4️⃣ Customer Purchase Gap
+
+Table: Orders(CustomerID, OrderDate, Amount)
+👉 Task: For each customer, find number of days between current order and previous order using LAG().
+🧩 Expected:
+CustomerID, OrderDate, Amount, PrevOrderDate, DaysBetween
+
+5️⃣ Bank Transaction Flow
+
+Table: Transactions(AccountNo, TxnDate, Amount, Type)
+👉 Task: Use LAG() to find previous balance or previous transaction amount for each account.
+🧩 Expected:
+AccountNo, TxnDate, Amount, PrevAmount, Difference
+
+6️⃣ Student Marks Improvement
+
+Table: Marks(StudentID, ExamDate, Score)
+👉 Task: Find next exam’s score and difference in marks using LEAD().
+🧩 Expected:
+StudentID, ExamDate, Score, NextScore, ScoreDiff
+
+7️⃣ Product Sales Comparison
+
+Table: ProductSales(ProductID, Month, Sales)
+👉 Task: Compare each product’s current month sales with previous month sales using LAG().
+🧩 Expected:
+ProductID, Month, Sales, PrevMonthSales, Growth%
+
+🔴 ADVANCED LEVEL (8–10)
+8️⃣ Salary Growth Over Time
+
+Table: Salaries(Employee, Year, Salary)
+👉 Task: Show each employee’s previous year’s salary, next year’s salary, and growth rate.
+🧩 Expected:
+Employee, Year, Salary, PrevSalary, NextSalary, Growth%
+
+9️⃣ Detect Missing Data
+
+Table: DailyAttendance(Employee, Date, Status)
+👉 Task: Find dates where an employee skipped between two present days (use LEAD() and date difference).
+🧩 Expected:
+Employee, Date, NextDate, DaysGap
+
+🔟 Running Event Performance
+
+Table: RaceResults(Athlete, EventDate, Position)
+👉 Task: Show each athlete’s previous and next position to analyze performance trend.
+🧩 Expected:
+Athlete, EventDate, Position, PrevPosition, NextPosition, Trend
+CREATE TABLE StockPrices (
+  Stock VARCHAR(10),
+  Date DATE,
+  Price INT
+);
+
+INSERT INTO StockPrices VALUES
+('AAPL', '2024-01-01', 150),
+('AAPL', '2024-01-02', 155),
+('AAPL', '2024-01-03', 152),
+('GOOG', '2024-01-01', 2800),
+('GOOG', '2024-01-02', 2810),
+('GOOG', '2024-01-03', 2790);
+
+CREATE TABLE Weather (
+  City VARCHAR(20),
+  Date DATE,
+  Temperature INT
+);
+
+INSERT INTO Weather VALUES
+('Delhi', '2024-01-01', 12),
+('Delhi', '2024-01-02', 15),
+('Delhi', '2024-01-03', 13),
+('Mumbai', '2024-01-01', 25),
+('Mumbai', '2024-01-02', 26),
+('Mumbai', '2024-01-03', 27);
+
+CREATE TABLE EmployeePromotions (
+  EmpID INT,
+  Year INT,
+  Position VARCHAR(30)
+);
+
+INSERT INTO EmployeePromotions VALUES
+(1, 2020, 'Junior Developer'),
+(1, 2021, 'Developer'),
+(1, 2023, 'Senior Developer'),
+(2, 2019, 'Sales Executive'),
+(2, 2021, 'Sales Manager'),
+(2, 2022, 'Regional Head');
+
+CREATE TABLE Orders (
+  CustomerID INT,
+  OrderDate DATE,
+  Amount INT
+);
+
+INSERT INTO Orders VALUES
+(101, '2024-01-01', 200),
+(101, '2024-01-10', 350),
+(101, '2024-02-01', 400),
+(102, '2024-01-05', 300),
+(102, '2024-01-20', 250),
+(102, '2024-02-05', 500);
+
+CREATE TABLE Transactions (
+  AccountNo INT,
+  TxnDate DATE,
+  Amount INT,
+  Type VARCHAR(10)
+);
+
+INSERT INTO Transactions VALUES
+(5551, '2024-01-01', 2000, 'Credit'),
+(5551, '2024-01-05', -500, 'Debit'),
+(5551, '2024-01-10', 1000, 'Credit'),
+(5552, '2024-02-01', 5000, 'Credit'),
+(5552, '2024-02-10', -2000, 'Debit'),
+(5552, '2024-02-15', -500, 'Debit');
+CREATE TABLE Marks (
+  StudentID INT,
+  ExamDate DATE,
+  Score INT
+);
+
+INSERT INTO Marks VALUES
+(1, '2024-01-01', 60),
+(1, '2024-02-01', 72),
+(1, '2024-03-01', 80),
+(2, '2024-01-15', 55),
+(2, '2024-02-15', 65),
+(2, '2024-03-15', 60);
+
+CREATE TABLE ProductSales (
+  ProductID INT,
+  Month VARCHAR(10),
+  Sales INT
+);
+
+INSERT INTO ProductSales VALUES
+(10, 'Jan', 1000),
+(10, 'Feb', 1200),
+(10, 'Mar', 1500),
+(20, 'Jan', 800),
+(20, 'Feb', 700),
+(20, 'Mar', 900);
+
+CREATE TABLE Salaries (
+  Employee VARCHAR(20),
+  Year INT,
+  Salary INT
+);
+
+INSERT INTO Salaries VALUES
+('Amit', 2020, 40000),
+('Amit', 2021, 45000),
+('Amit', 2022, 50000),
+('Riya', 2020, 35000),
+('Riya', 2021, 40000),
+('Riya', 2022, 42000);
+
+CREATE TABLE DailyAttendance (
+  Employee VARCHAR(20),
+  Date DATE,
+  Status VARCHAR(10)
+);
+
+INSERT INTO DailyAttendance VALUES
+('Amit', '2024-01-01', 'Present'),
+('Amit', '2024-01-02', 'Absent'),
+('Amit', '2024-01-05', 'Present'),
+('Riya', '2024-01-01', 'Present'),
+('Riya', '2024-01-03', 'Present'),
+('Riya', '2024-01-06', 'Present');
+CREATE TABLE RaceResults (
+  Athlete VARCHAR(20),
+  EventDate DATE,
+  Position INT
+);
+
+INSERT INTO RaceResults VALUES
+('John', '2024-01-01', 3),
+('John', '2024-02-01', 2),
+('John', '2024-03-01', 1),
+('Mary', '2024-01-10', 1),
+('Mary', '2024-02-10', 3),
+('Mary', '2024-03-10', 2);
+
+select * from StockPrices
+select * from Weather
+select * from EmployeePromotions
+select * from Orders
+
+select *,
+lead(price)over(partition by stock order by date)[next day’s price]
+from StockPrices
+
+select *,
+lag(Temperature)over (partition by city order by date)[previous day’s temperature],
+(temperature - lag(Temperature)over (partition by city order by date))[Temp Change]
+from Weather
+
+select *,
+lead(position) over (partition by empid order by year) [Nextposition],
+lag(position) over (partition by empid order by year) [Prevposition]
+from EmployeePromotions
+
+
+select *,lag(orderdate) over(partition by customerid order by orderdate)[PrevOrderDate],
+datediff(day,lag(orderdate) over(partition by customerid order by orderdate), OrderDate)[DaysBetween]
+from Orders
+
+select * from Transactions
+select *,lag(amount)over(partition by accountno order by txndate)[PrevAmount],
+(amount-lag(amount)over(partition by accountno order by txndate))[Difference]
+from Transactions
+
+select * from marks
+select * ,
+lead(score)over(partition by studentID order by examdate)[NextScore],
+(lead(score)over(partition by studentID order by examdate) - Score)[ScoreDiff]
+from Marks
+
+
+select * from ProductSales
+
+select *,
+lag(sales)over(partition by productid order by month)[PrevMonthSales],
+(sales - lag(sales)over(partition by productid order by month))*100
+  / NULLIF(LAG(Sales) OVER (PARTITION BY ProductID ORDER BY Month),0)[Growth%]
+from ProductSales
+
+select * from Salaries
+select *,
+lag(Salary)over(partition by employee order by year)[prevSalary],
+LEAD(salary)over(partition by employee order by year)[NextSalary],
+(Salary -lag(Salary)over(partition by employee order by year))*100/
+nullif(lag(Salary)over(partition by employee order by year),0)[Growth%]
+from Salaries
+
+
+select * from DailyAttendance
+
+
+select *,
+lead(date)over(partition by employee order by date)[nextDate],
+datediff(day,date,lead(date)over(partition by employee order by date))[DaysGap]
+from DailyAttendance
+where Status = 'Present'
+
+
+select * from RaceResults
+select *,
+lag(position)over(partition by athlete order by eventdate)[PrevPosition],
+LEAD(position)over(partition by athlete order by eventdate)[nextPosition],
+CASE 
+        WHEN LAG(Position) OVER (PARTITION BY Athlete ORDER BY EventDate) IS NULL THEN 'N/A'
+        WHEN Position < LAG(Position) OVER (PARTITION BY Athlete ORDER BY EventDate) THEN 'Improved'
+        WHEN Position > LAG(Position) OVER (PARTITION BY Athlete ORDER BY EventDate) THEN 'Declined'
+        ELSE 'Same'
+    END AS Trend
+from RaceResults
+
