@@ -1,0 +1,82 @@
+CREATE TABLE Sales1 (
+  Employee VARCHAR(10),
+  Month VARCHAR(10),
+  Sales INT
+);
+INSERT INTO Sales1 VALUES 
+('A', 'Jan', 1000),
+('A', 'Feb', 1500),
+('A', 'Mar', 1200),
+('B', 'Jan', 2000),
+('B', 'Feb', 1800);
+
+CREATE TABLE Orders (
+  OrderID INT,
+  Customer VARCHAR(20),
+  OrderDate DATE,
+  TotalAmount INT
+);
+INSERT INTO Orders VALUES
+(1, 'John', '2024-01-01', 200),
+(2, 'John', '2024-01-10', 350),
+(3, 'John', '2024-01-20', 400),
+(4, 'John', '2024-02-01', 300),
+(5, 'Mary', '2024-01-05', 300),
+(6, 'Mary', '2024-01-15', 450);
+
+CREATE TABLE EmployeeSales (
+  Employee VARCHAR(10),
+  SaleDate DATE,
+  Sales INT
+);
+
+INSERT INTO EmployeeSales VALUES
+('A', '2024-01-01', 100),
+('A', '2024-01-05', 200),
+('A', '2024-01-10', 150),
+('B', '2024-01-02', 300),
+('B', '2024-01-07', 400);
+
+CREATE TABLE StockPrices (
+  Stock VARCHAR(10),
+  Date DATE,
+  Price INT
+);
+
+INSERT INTO StockPrices VALUES
+('AAPL', '2024-01-01', 150),
+('AAPL', '2024-01-02', 155),
+('AAPL', '2024-01-03', 152),
+('MSFT', '2024-01-01', 310),
+('MSFT', '2024-01-02', 315),
+('MSFT', '2024-01-03', 312);
+
+
+select * from Sales1
+select * from Orders
+select * from EmployeeSales
+select * from StockPrices
+
+select Employee,month,Sales,
+LEAD(sales)over (partition by employee  order by month )[Next Month's sales]
+from Sales1
+
+select Employee,month,sales,
+LEAD(sales)over (order by month )[Next Month's sales]
+from Sales1
+
+
+select OrderID,Customer,OrderDate,TotalAmount,
+lead(orderDate) over(partition by customer order by orderdate)[next order date],
+lead(totalamount) over(partition by customer order by orderdate)[next total amount]
+from Orders
+
+
+
+
+
+
+select Employee,SaleDate,sales,
+lead(sales,1,0)over(partition by employee order by saledate) [next day sales],
+(lead(sales,1,0)over(partition by employee order by saledate) - sales ) [Difference]
+from EmployeeSales
