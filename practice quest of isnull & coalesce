@@ -1,0 +1,89 @@
+
+CREATE TABLE Employees (
+    EmpID INT,
+    Name VARCHAR(50),
+    Department VARCHAR(50)
+);
+
+INSERT INTO Employees VALUES
+(1, 'Ali', NULL),
+(2, 'Sara', 'HR'),
+(3, 'Imran', NULL);
+
+CREATE TABLE Customers (
+    CustomerID INT,
+    Name VARCHAR(50),
+    Phone VARCHAR(20),
+    Email VARCHAR(50)
+);
+
+INSERT INTO Customers VALUES
+(1, 'Ali', NULL, 'ali@gmail.com'),
+(2, 'Sara', '9876543210', NULL),
+(3, 'Imran', NULL, NULL);
+
+CREATE TABLE Products (
+    ProductID INT,
+    Name VARCHAR(50),
+    Price1 DECIMAL(10,2),
+    Price2 DECIMAL(10,2),
+    Price3 DECIMAL(10,2)
+);
+
+INSERT INTO Products VALUES
+(1, 'Laptop', NULL, 500, 550),
+(2, 'Mouse', NULL, NULL, 20),
+(3, 'Keyboard', NULL, NULL, NULL);
+
+CREATE TABLE Sales (
+    EmpID INT,
+    Name VARCHAR(50),
+    Bonus1 DECIMAL(10,2),
+    Bonus2 DECIMAL(10,2)
+);
+
+INSERT INTO Sales VALUES
+(1, 'Ali', NULL, 500),
+(2, 'Sara', 300, NULL),
+(3, 'Imran', NULL, NULL);
+
+CREATE TABLE EmployeeContacts (
+    EmpID INT,
+    Name VARCHAR(50),
+    WorkPhone VARCHAR(20),
+    Mobile VARCHAR(20),
+    Email VARCHAR(50)
+);
+
+INSERT INTO EmployeeContacts VALUES
+(1, 'Ali', NULL, '1234567890', NULL),
+(2, 'Sara', '9876543210', NULL, 'sara@gmail.com'),
+(3, 'Imran', NULL, NULL, NULL);
+
+select * from Employees
+select * from Customers
+select * from Products
+select * from Sales
+select * from EmployeeContacts
+
+select Name,ISNULL(department,'No Department')[Department]
+from Employees
+
+select *,coalesce(Phone,email,'No contact')[ContactInfo]
+from Customers
+
+select *,coalesce(Price1,Price2,Price3,'0')[FinalPrice]
+from Products
+
+select *,coalesce(Bonus1,bonus2,'0')[Bonusamount]
+from Sales
+
+with cte as (
+select *,coalesce(WorkPhone,mobile,email,'No Contact')[ContactInfo] 
+from EmployeeContacts
+)
+select name,contactInfo from cte
+
+
+
+
