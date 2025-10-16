@@ -1,0 +1,107 @@
+
+CREATE TABLE EmployeeSales (
+    EmpID INT,
+    Name VARCHAR(50),
+    MonthName VARCHAR(10),
+    SalesAmount INT
+);
+
+INSERT INTO EmployeeSales VALUES
+(1, 'Ali',  'Jan', 1000),
+(1, 'Ali',  'Feb', 1500),
+(1, 'Ali',  'Mar', 1200),
+(1, 'Ali',  'Apr', 1800),
+(2, 'Sara', 'Jan', 2000),
+(2, 'Sara', 'Feb', 2500),
+(2, 'Sara', 'Mar', 2200),
+(2, 'Sara', 'Apr', 2600),
+(3, 'Imran','Jan', 900),
+(3, 'Imran','Feb', 1100),
+(3, 'Imran','Mar', 950),
+(3, 'Imran','Apr', 1200);
+
+select * from EmployeeSales
+
+select *,FIRST_VALUE(SalesAmount)over(partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end
+)[first sales] 
+from EmployeeSales
+
+select *,last_value(SalesAmount)over(partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end
+ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)[last month sales] 
+from EmployeeSales
+
+select EmpID,Name,MonthName,SalesAmount,
+SalesAmount-FIRST_VALUE(salesamount) over(partition by name order by case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end)[DiffFromFirstMonth]
+from EmployeeSales
+
+select EmpID,Name,MonthName,SalesAmount,
+salesamount-(last_value(SalesAmount)over(partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end
+ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) )
+from EmployeeSales
+
+
+select Name,FIRST_VALUE(salesamount) over (partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end)[first Month sale],
+last_value(SalesAmount)over(partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end
+ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)[last month sales],
+last_value(SalesAmount)over(partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end
+ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) - 
+FIRST_VALUE(salesamount) over (partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end)
+[gROWTH]
+from EmployeeSales
+
+
+select * from(Select *,
+FIRST_VALUE(salesamount) over (partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end)[First month sale],
+last_value(SalesAmount)over(partition by name order by 
+case monthname
+when 'Jan' then 1
+when 'Feb' then 2
+when 'Mar' then 3
+when 'Apr' then 4 end
+ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)[last month sale]
+from EmployeeSales) as sub
+where [last month sale] > [First month sale]
